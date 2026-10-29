@@ -6,3 +6,6 @@ deploy/
 *.suo
 .vs/
 register.reg
+
+# Claude Code local settings (may contain personal permissions/paths)
+.claude/
