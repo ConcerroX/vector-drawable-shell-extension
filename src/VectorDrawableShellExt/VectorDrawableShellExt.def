@@ -1,0 +1,4 @@
+LIBRARY "VectorDrawableShellExt"
+EXPORTS
+    DllGetClassObject   PRIVATE
+    DllCanUnloadNow     PRIVATE

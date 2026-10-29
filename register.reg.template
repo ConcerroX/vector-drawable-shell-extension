@@ -1,0 +1,49 @@
+Windows Registry Editor Version 5.00
+
+; ============================================================================
+; VectorDrawable Shell Extension registration (PER-USER / HKCU)
+; Registers a thumbnail provider and preview handler for Android VectorDrawable
+; XML files (*.xml whose root element is <vector>).
+;
+; All entries are under HKEY_CURRENT_USER, matching PowerToys' per-user model —
+; no administrator rights required. The DLL reads the stream/file and, if the
+; content is NOT a <vector>, returns failure so the default .xml handler takes
+; over (runtime content sniffing).
+;
+; Replace {DEPLOY_DIR} with the absolute path to the deploy/ folder before import,
+; OR use the accompanying install.ps1 which does this substitution for you.
+; ============================================================================
+
+; ---- Thumbnail provider CLSID {2D063192-2936-47B0-9029-EEC429B56CAD} ----
+[HKEY_CURRENT_USER\Software\Classes\CLSID\{2D063192-2936-47B0-9029-EEC429B56CAD}]
+@="VectorDrawable Thumbnail Provider"
+
+[HKEY_CURRENT_USER\Software\Classes\CLSID\{2D063192-2936-47B0-9029-EEC429B56CAD}\InprocServer32]
+@="{DEPLOY_DIR}\VectorDrawableShellExt.dll"
+"ThreadingModel"="Apartment"
+
+; ---- Preview handler CLSID {7DE97D1F-66CA-415B-9C8C-4D4D57504687} ----
+[HKEY_CURRENT_USER\Software\Classes\CLSID\{7DE97D1F-66CA-415B-9C8C-4D4D57504687}]
+@="VectorDrawable Preview Handler"
+
+[HKEY_CURRENT_USER\Software\Classes\CLSID\{7DE97D1F-66CA-415B-9C8C-4D4D57504687}\InprocServer32]
+@="{DEPLOY_DIR}\VectorDrawableShellExt.dll"
+"ThreadingModel"="Apartment"
+
+; Preview handlers must be registered in the PreviewHandlers list to appear in
+; the Explorer preview pane, and must specify the preview host AppID.
+[HKEY_CURRENT_USER\Software\Classes\CLSID\{7DE97D1F-66CA-415B-9C8C-4D4D57504687}]
+"AppID"="{6d2b5079-2f0b-48dd-ab7f-97cec514d30b}"
+"DisplayName"="VectorDrawable Preview Handler"
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\PreviewHandlers]
+"{7DE97D1F-66CA-415B-9C8C-4D4D57504687}"="VectorDrawable Preview Handler"
+
+; ---- Associate with .xml files ----
+; Thumbnail provider for .xml (content sniffed at runtime).
+[HKEY_CURRENT_USER\Software\Classes\.xml\shellex\{e357fccd-a995-4576-b01f-234630154e96}]
+@="{2D063192-2936-47B0-9029-EEC429B56CAD}"
+
+; Preview handler for .xml.
+[HKEY_CURRENT_USER\Software\Classes\.xml\shellex\{8895b1c6-b41f-4c1c-a562-0d564250836f}]
+@="{7DE97D1F-66CA-415B-9C8C-4D4D57504687}"

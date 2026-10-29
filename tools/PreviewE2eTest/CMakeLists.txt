@@ -1,0 +1,4 @@
+cmake_minimum_required(VERSION 3.20)
+project(NativePreviewE2eTest LANGUAGES CXX)
+add_executable(NativePreviewE2eTest NativePreviewE2eTest.cpp)
+target_link_libraries(NativePreviewE2eTest PRIVATE ole32 shlwapi)
